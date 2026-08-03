@@ -288,7 +288,6 @@
         .name-row { top: 0; z-index: 11; border-bottom: 1px solid var(--color-border-strong); background: var(--color-primary-dark) !important; }
         .memo-row { top: 52px; z-index: 10; border-bottom: 2px solid var(--color-border-strong); background: var(--color-primary-dark) !important; }
 
-        /* ▼ 時間ヘッダー・セルの幅をコンパクトに調整 */
         .time-header {
           position: sticky;
           left: 0;
@@ -309,7 +308,6 @@
           transition: width 0.2s, min-width 0.2s;
         }
 
-        /* 操作コントロール表示時のヘッダー幅拡大 */
         .timetable.show-time-controls .time-header {
           width: 80px;
           min-width: 80px;
@@ -394,7 +392,6 @@
         .table-row:hover { background: rgba(255, 215, 0, 0.05); }
         .table-row:nth-child(even):hover { background: rgba(255, 215, 0, 0.08); }
 
-        /* ▼ 時間セル */
         .time-cell {
           position: sticky;
           left: 0;
@@ -422,16 +419,15 @@
         }
 
         .time-controls-col {
-          display: none; /* デフォルト非表示 */
+          display: none;
           flex-direction: column;
           gap: 1px;
         }
 
         .time-delete-checkbox {
-          display: none; /* デフォルト非表示 */
+          display: none;
         }
 
-        /* コントロール表示時のスタイル切り替え */
         .timetable.show-time-controls .time-cell-content {
           justify-content: space-between;
         }
@@ -863,7 +859,6 @@
                 document.getElementById('zoomOutBtn')?.addEventListener('click', () => this.changeColumnWidth(-20));
                 document.getElementById('zoomResetBtn')?.addEventListener('click', () => this.setColumnWidth(window.innerWidth <= 600 ? 130 : 140));
 
-                /* ▼ 時間コントロール表示切替ボタンの設定 */
                 document.getElementById('toggleTimeControlsBtn')?.addEventListener('click', (e) => {
                     this.table.classList.toggle('show-time-controls');
                     e.currentTarget.classList.toggle('active');
@@ -1058,7 +1053,7 @@
                     memo: memoHeaders[columnIndex]?.querySelector('textarea').value || '',
                     activities: Array.from(bodyRows).map(row => {
                         const cells = row.querySelectorAll('.activity-cell');
-                        return cells[columnIndex] ? cells[columnIndex].innerHTML : '';
+                        return cells[columnIndex] ? cells[columnIndex].textContent : '';
                     })
                 };
             }
@@ -1073,7 +1068,7 @@
                 
                 bodyRows.forEach((row, rowIndex) => {
                     const cells = row.querySelectorAll('.activity-cell');
-                    if (cells[columnIndex]) cells[columnIndex].innerHTML = data.activities[rowIndex] || '';
+                    if (cells[columnIndex]) cells[columnIndex].textContent = data.activities[rowIndex] || '';
                 });
             }
 
@@ -1104,7 +1099,7 @@
                             const r = parseInt(parts[1], 10), c = parseInt(parts[3], 10);
                             if (rows[r]) {
                                 const cells = rows[r].querySelectorAll('.activity-cell');
-                                if (cells[c]) cells[c].innerHTML = content;
+                                if (cells[c]) cells[c].textContent = content;
                             }
                         }
                     });
@@ -1119,7 +1114,7 @@
                 const cellData = {};
                 this.tableBody.querySelectorAll('tr').forEach((row, rIdx) => {
                     row.querySelectorAll('.activity-cell').forEach((cell, cIdx) => {
-                        if (cell.innerHTML.trim()) cellData[`row-${rIdx}-col-${cIdx}`] = cell.innerHTML;
+                        if (cell.textContent.trim()) cellData[`row-${rIdx}-col-${cIdx}`] = cell.textContent;
                     });
                 });
 
