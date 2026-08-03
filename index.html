@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>推理小説タイムテーブル</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+          /* Primitive Color Tokens */
+          --color-white: rgba(255, 255, 255, 1);
+          --color-black: rgba(0, 0, 0, 1);
+          --color-cream-50: rgba(252, 252, 249, 1);
+          --color-cream-100: rgba(255, 255, 253, 1);
+          --color-gray-200: rgba(245, 245, 245, 1);
+          --color-gray-300: rgba(167, 169, 169, 1);
+          --color-gray-400: rgba(119, 124, 124, 1);
+          --color-slate-500: rgba(98, 108, 113, 1);
+          --color-brown-600: rgba(94, 82, 64, 1);
+          --color-charcoal-700: rgba(31, 33, 33, 1);
+          --color-charcoal-800: rgba(38, 40, 40, 1);
+          --color-slate-900: rgba(19, 52, 59, 1);
+          --color-teal-300: rgba(50, 184, 198, 1);
+          --color-teal-400: rgba(45, 166, 178, 1);
+          --color-teal-500: rgba(33, 128, 141, 1);
+          --color-teal-600: rgba(29, 116, 128, 1);
+          --color-teal-700: rgba(26, 104, 115, 1);
+          --color-teal-800: rgba(41, 150, 161, 1);
+          --color-red-400: rgba(255, 84, 89, 1);
+          --color-red-500: rgba(192, 21, 47, 1);
+          --color-orange-400: rgba(230, 129, 97, 1);
+          --color-orange-500: rgba(168, 75, 47, 1);
+
+          /* Detective Theme Color Palette */
+          --color-primary-dark: #1a1a2e;
+          --color-secondary-dark: #16213e;
+          --color-accent-gold: #ffd700;
+          --color-accent-amber: #ffaa00;
+          --color-danger-red: #8b0000;
+          --color-warning-orange: #ff6b35;
+          --color-text-light: #f5f5f5;
+          --color-text-secondary: #e0e0e0;
+          --color-text-muted: #b0b0b0;
+          --color-border-subtle: rgba(255, 215, 0, 0.2);
+          --color-border-strong: rgba(255, 215, 0, 0.4);
+          --color-surface-elevated: rgba(255, 255, 255, 0.05);
+          --color-surface-hover: rgba(255, 215, 0, 0.1);
+
+          /* Typography */
+          --font-display: 'Playfair Display', serif;
+          --font-body: 'Inter', sans-serif;
+          
+          /* Spacing */
+          --space-xs: 0.5rem;
+          --space-sm: 0.75rem;
+          --space-md: 1rem;
+          --space-lg: 1.5rem;
+          --space-xl: 2rem;
+          --space-2xl: 3rem;
+          
+          /* Border Radius */
+          --radius-sm: 0.375rem;
+          --radius-md: 0.5rem;
+          --radius-lg: 0.75rem;
+          --radius-xl: 1rem;
+          
+          /* Transitions */
+          --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+          --transition-medium: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          
+          /* Shadows */
+          --shadow-subtle: 0 2px 4px rgba(0, 0, 0, 0.3);
+          --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.4);
+          --shadow-strong: 0 8px 24px rgba(0, 0, 0, 0.5);
+          --shadow-glow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+
+        body {
+          font-family: var(--font-body);
+          background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-secondary-dark) 100%);
+          color: var(--color-text-light);
+          min-height: 100vh;
+        }
+
+        body::before {
+          content: '';
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-image: 
+            radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.05) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(255, 170, 0, 0.05) 0%, transparent 50%);
+          pointer-events: none;
+          z-index: -1;
+        }
+
+        .app-container {
+          margin: 0 auto;
+          padding: 20px;
+          max-width: 1280px;
+        }
+
+        .control-panel {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+          gap: var(--space-lg);
+          margin-bottom: var(--space-2xl);
+        }
+
+        .control-group {
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid var(--color-border-subtle);
+          border-radius: var(--radius-lg);
+          padding: var(--space-lg);
+          backdrop-filter: blur(10px);
+          box-shadow: var(--shadow-subtle);
+          transition: var(--transition-medium);
+        }
+
+        .control-group:hover {
+          box-shadow: var(--shadow-medium);
+          border-color: var(--color-border-strong);
+        }
+
+        .control-title {
+          font-family: var(--font-display);
+          font-size: 1.25rem;
+          color: var(--color-accent-gold);
+          margin-bottom: var(--space-lg);
+          font-weight: 600;
+        }
+
+        .button-group {
+          display: flex;
+          gap: var(--space-md);
+          flex-wrap: wrap;
+        }
+
+        .time-controls-simplified {
+          display: flex;
+          gap: var(--space-md);
+          align-items: center;
+          flex-wrap: wrap;
+        }
+
+        .time-controls-simplified select.form-control {
+          width: auto;
+          min-width: unset;
+        }
+
+        .radio-group {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .btn {
+          display: inline-flex;
+          align-items: center;
+          gap: var(--space-sm);
+          padding: var(--space-sm) var(--space-lg);
+          border: none;
+          border-radius: var(--radius-md);
+          font-family: var(--font-body);
+          font-size: 0.875rem;
+          font-weight: 500;
+          text-decoration: none;
+          cursor: pointer;
+          transition: var(--transition-fast);
+          position: relative;
+          overflow: hidden;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          box-shadow: var(--shadow-subtle);
+        }
+
+        .btn::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+          transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+          left: 100%;
+        }
+
+        .btn--primary {
+          background: linear-gradient(135deg, var(--color-accent-gold), var(--color-accent-amber));
+          color: var(--color-primary-dark);
+        }
+
+        .btn--secondary {
+          background: rgba(255, 255, 255, 0.1);
+          color: var(--color-text-light);
+          border: 1px solid var(--color-border-subtle);
+        }
+
+        .btn--accent {
+          background: linear-gradient(135deg, var(--color-accent-amber), #ff8c00);
+          color: var(--color-primary-dark);
+        }
+
+        .btn--danger {
+          background: linear-gradient(135deg, var(--color-danger-red), #dc143c);
+          color: var(--color-text-light);
+        }
+
+        .btn--warning {
+          background: linear-gradient(135deg, var(--color-warning-orange), #ff4500);
+          color: var(--color-text-light);
+        }
+
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--color-text-light);
+            border: 1px solid var(--color-border-subtle);
+            border-radius: var(--radius-md);
+            padding: var(--space-sm);
+            font-size: 1rem;
+            min-width: 100px;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--color-accent-gold);
+            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+        }
+
+        select.form-control option {
+            background-color: var(--color-primary-dark);
+            color: var(--color-text-light);
+        }
+
+        .timetable-container {
+          background: rgba(255, 255, 255, 0.02);
+          border: 1px solid var(--color-border-subtle);
+          border-radius: var(--radius-xl);
+          padding: 0;
+          box-shadow: var(--shadow-medium);
+          backdrop-filter: blur(10px);
+        }
+
+        .table-wrapper {
+          overflow: auto;
+          border-radius: var(--radius-lg);
+          box-shadow: inset 0 0 0 1px var(--color-border-subtle);
+          max-height: 70vh;
+          position: relative;
+        }
+
+        .timetable {
+          width: 100%;
+          border-collapse: separate;
+          border-spacing: 0;
+          background: rgba(255, 255, 255, 0.02);
+          table-layout: fixed;
+        }
+
+        .timetable thead tr {
+          position: sticky;
+        }
+
+        .name-row { top: 0; z-index: 11; border-bottom: 1px solid var(--color-border-strong); background: var(--color-primary-dark) !important; }
+        .memo-row { top: 60px; z-index: 10; border-bottom: 2px solid var(--color-border-strong); background: var(--color-primary-dark) !important; }
+
+        .time-header {
+          position: sticky;
+          left: 0;
+          top: 0;
+          z-index: 12;
+          background: var(--color-primary-dark) !important;
+          padding: var(--space-lg);
+          text-align: center;
+          font-family: var(--font-display);
+          font-weight: 600;
+          color: var(--color-accent-gold);
+          min-width: 120px;
+          border-right: 1px solid var(--color-border-subtle);
+          box-shadow: 1px 0 0 0 var(--color-border-subtle);
+        }
+
+        .character-header {
+          padding: 4px;
+          text-align: center;
+          background: var(--color-primary-dark) !important;
+          border-right: 1px solid var(--color-border-subtle);
+          min-width: 150px;
+          max-width: 150px;
+        }
+
+        .character-name-input {
+          width: 100%;
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid var(--color-border-subtle);
+          border-radius: var(--radius-sm);
+          padding: 4px;
+          color: var(--color-text-light);
+          text-align: center;
+          margin-bottom: 4px;
+        }
+
+        .character-name-input:focus {
+          outline: none;
+          border-color: var(--color-accent-gold);
+          box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+        }
+
+        .character-controls-row {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 4px;
+        }
+        
+        .move-btn {
+          width: 20px;
+          height: 16px;
+          font-size: 10px;
+          background: rgba(255, 255, 255, 0.1);
+          color: var(--color-text-light);
+          border: 1px solid var(--color-border-subtle);
+          border-radius: 2px;
+          cursor: pointer;
+        }
+
+        .character-memo-header {
+          padding: 4px;
+          background: var(--color-primary-dark) !important;
+          border-right: 1px solid var(--color-border-subtle);
+          min-width: 150px;
+          max-width: 150px;
+        }
+
+        .character-memo-textarea {
+          width: 100%;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid var(--color-border-subtle);
+          border-radius: var(--radius-sm);
+          padding: 4px;
+          color: var(--color-text-light);
+          font-size: 11px;
+          resize: none;
+        }
+
+        .table-row:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
+        .table-row:hover { background: rgba(255, 215, 0, 0.05); }
+        .table-row:nth-child(even):hover { background: rgba(255, 215, 0, 0.08); }
+
+        .time-cell {
+          position: sticky;
+          left: 0;
+          z-index: 9;
+          background: var(--color-primary-dark) !important;
+          padding: var(--space-md);
+          border-right: 1px solid var(--color-border-subtle);
+          border-bottom: 1px solid var(--color-border-subtle);
+          min-width: 120px;
+        }
+
+        .time-cell-content {
+          display: flex;
+          align-items: center;
+          gap: var(--space-sm);
+          justify-content: center;
+        }
+        
+        .time-display {
+          font-family: var(--font-display);
+          font-weight: 600;
+          color: var(--color-accent-gold);
+          cursor: pointer;
+          padding: 4px 8px;
+          border-radius: var(--radius-sm);
+          transition: background-color 0.2s;
+          user-select: none;
+          -webkit-user-select: none;
+        }
+
+        .time-display:hover {
+          background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .time-display[contenteditable="true"] {
+          background-color: rgba(0, 0, 0, 0.4);
+          outline: none;
+          box-shadow: 0 0 0 2px var(--color-accent-gold);
+          cursor: text;
+          user-select: text;
+          -webkit-user-select: text;
+        }
+
+        .activity-cell {
+          padding: var(--space-md);
+          border-right: 1px solid var(--color-border-subtle);
+          border-bottom: 1px solid var(--color-border-subtle);
+          min-height: 60px;
+          vertical-align: top;
+          transition: var(--transition-fast);
+        }
+
+        .activity-cell:focus {
+          outline: none;
+          background: rgba(255, 215, 0, 0.1) !important;
+          box-shadow: inset 0 0 0 2px rgba(255, 215, 0, 0.3);
+        }
+
+        input[type="checkbox"] {
+          appearance: none;
+          width: 16px;
+          height: 16px;
+          border: 1px solid var(--color-border-subtle);
+          border-radius: 3px;
+          background: rgba(255, 255, 255, 0.1);
+          cursor: pointer;
+          position: relative;
+        }
+
+        input[type="checkbox"]:checked {
+          background: var(--color-accent-gold);
+        }
+        
+        input[type="checkbox"]:checked::after {
+          content: '✓';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: var(--color-primary-dark);
+          font-size: 10px;
+          font-weight: bold;
+        }
+
+        /* Modals and Overlays */
+        .modal {
+          position: fixed;
+          inset: 0;
+          z-index: 1000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .modal.hidden { display: none; }
+
+        .modal-backdrop {
+          position: absolute;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.7);
+          backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+          background: var(--color-secondary-dark);
+          border: 1px solid var(--color-border-strong);
+          border-radius: var(--radius-xl);
+          padding: var(--space-xl);
+          max-width: 400px;
+          position: relative;
+          text-align: center;
+        }
+
+        .save-indicator {
+          position: fixed;
+          top: 20px;
+          left: 20px;
+          background: rgba(0, 0, 0, 0.8);
+          padding: 8px 16px;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          z-index: 999;
+          transition: opacity 0.3s;
+        }
+        .save-indicator.hidden { opacity: 0; pointer-events: none; }
+
+        .last-saved-text {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+            z-index: 900;
+        }
+
+        .loading-overlay { display: none !important; }
+        
+        .fade-in { animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <!-- Character and Data Controls -->
+            <div class="control-group">
+                <h3 class="control-title">人物管理</h3>
+                <div class="button-group">
+                    <button id="addButton" class="btn btn--primary">
+                        <span class="btn-icon">+</span> 追加
+                    </button>
+                    <button id="removeButton" class="btn btn--secondary">
+                        <span class="btn-icon">-</span> 削除
+                    </button>
+                    <button id="resetButton" class="btn btn--warning">
+                        <span class="btn-icon">⚠️</span> リセット
+                    </button>
+                </div>
+            </div>
+
+            <!-- Time Controls -->
+            <div class="control-group" id="time-control-group">
+                <h3 class="control-title">時間管理</h3>
+                <div class="time-controls-simplified">
+                    <select id="time-interval" class="form-control" title="時間間隔">
+                        <option value="5">5分</option>
+                        <option value="10">10分</option>
+                        <option value="30">30分</option>
+                        <option value="60">1時間</option>
+                    </select>
+                    <select id="insert-time" class="form-control" title="基準時間"></select>
+                    <div class="radio-group" title="挿入方向">
+                        <input type="radio" id="insert-before" name="insert-position" value="before">
+                        <label for="insert-before">前</label>
+                        <input type="radio" id="insert-after" name="insert-position" value="after" checked>
+                        <label for="insert-after">後</label>
+                    </div>
+                    <button id="addTimeButton" class="btn btn--accent">
+                        <span class="btn-icon">⏰</span> 追加
+                    </button>
+                    <button id="removeTimeButton" class="btn btn--danger">
+                        <span class="btn-icon">🗑</span> 削除
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timetable Section -->
+        <div class="timetable-container">
+            <div class="table-wrapper">
+                <table class="timetable">
+                    <thead>
+                        <!-- Character Name and Controls Row -->
+                        <tr class="name-row">
+                            <th class="time-header" rowspan="2">時間</th>
+                            <th class="character-header">
+                                <div class="character-name-row">
+                                    <input type="text" class="character-name-input" value="人物A">
+                                </div>
+                                <div class="character-controls-row">
+                                    <button class="move-btn move-left">←</button>
+                                    <input type="checkbox" class="delete-checkbox">
+                                    <button class="move-btn move-right">→</button>
+                                </div>
+                            </th>
+                            <th class="character-header">
+                                <div class="character-name-row">
+                                    <input type="text" class="character-name-input" value="人物B">
+                                </div>
+                                <div class="character-controls-row">
+                                    <button class="move-btn move-left">←</button>
+                                    <input type="checkbox" class="delete-checkbox">
+                                    <button class="move-btn move-right">→</button>
+                                </div>
+                            </th>
+                            <th class="character-header">
+                                <div class="character-name-row">
+                                    <input type="text" class="character-name-input" value="人物C">
+                                </div>
+                                <div class="character-controls-row">
+                                    <button class="move-btn move-left">←</button>
+                                    <input type="checkbox" class="delete-checkbox">
+                                    <button class="move-btn move-right">→</button>
+                                </div>
+                            </th>
+                        </tr>
+                        <!-- Character Memo Row -->
+                        <tr class="memo-row">
+                            <th class="character-memo-header">
+                                <textarea class="character-memo-textarea" placeholder="メモA..." rows="2"></textarea>
+                            </th>
+                            <th class="character-memo-header">
+                                <textarea class="character-memo-textarea" placeholder="メモB..." rows="2"></textarea>
+                            </th>
+                            <th class="character-memo-header">
+                                <textarea class="character-memo-textarea" placeholder="メモC..." rows="2"></textarea>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-body">
+                        <tr class="table-row">
+                            <td class="time-cell">
+                                <div class="time-cell-content">
+                                    <input type="checkbox" class="time-delete-checkbox">
+                                    <span class="time-display">08:00</span>
+                                </div>
+                            </td>
+                            <td class="activity-cell" contenteditable="true"></td>
+                            <td class="activity-cell" contenteditable="true"></td>
+                            <td class="activity-cell" contenteditable="true"></td>
+                        </tr>
+                        <tr class="table-row">
+                            <td class="time-cell">
+                                <div class="time-cell-content">
+                                    <input type="checkbox" class="time-delete-checkbox">
+                                    <span class="time-display">09:00</span>
+                                </div>
+                            </td>
+                            <td class="activity-cell" contenteditable="true"></td>
+                            <td class="activity-cell" contenteditable="true"></td>
+                            <td class="activity-cell" contenteditable="true"></td>
+                        </tr>
+                        <tr class="table-row">
+                            <td class="time-cell">
+                                <div class="time-cell-content">
+                                    <input type="checkbox" class="time-delete-checkbox">
+                                    <span class="time-display">10:00</span>
+                                </div>
+                            </td>
+                            <td class="activity-cell" contenteditable="true"></td>
+                            <td class="activity-cell" contenteditable="true"></td>
+                            <td class="activity-cell" contenteditable="true"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Reset Confirmation Modal -->
+        <div id="resetModal" class="modal hidden">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content">
+                <h3 class="modal-title" style="margin-bottom: 1rem; color: var(--color-accent-gold);">データのリセット</h3>
+                <p style="margin-bottom: 0.5rem;">全てのデータを削除してもよろしいですか？</p>
+                <p style="color: var(--color-warning-orange); margin-bottom: 1.5rem; font-size: 0.9rem;">この操作は取り消すことができません。</p>
+                <div style="display: flex; gap: 1rem; justify-content: center;">
+                    <button id="confirmReset" class="btn btn--danger">削除する</button>
+                    <button id="cancelReset" class="btn btn--secondary">キャンセル</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Auto Save Indicator -->
+        <div id="saveIndicator" class="save-indicator hidden">
+            <span>💾 保存しました</span>
+        </div>
+    </div>
+
+    <script>
+        class DetectiveTimetableStorage {
+            constructor(storageKey = 'detectiveTimetableData') {
+                this.storageKey = storageKey;
+                this.initialData = {
+                    characters: ["人物A", "人物B", "人物C"],
+                    memos: ["", "", ""],
+                    timeRows: ["08:00", "09:00", "10:00", "11:00", "12:00"],
+                    cellData: {},
+                    lastSaved: null
+                };
+            }
+
+            saveData(data) {
+                try {
+                    const dataToSave = { ...data, lastSaved: new Date().toISOString() };
+                    localStorage.setItem(this.storageKey, JSON.stringify(dataToSave));
+                    return true;
+                } catch (error) {
+                    console.error("Error saving data:", error);
+                    return false;
+                }
+            }
+
+            loadData() {
+                try {
+                    const savedData = localStorage.getItem(this.storageKey);
+                    if (savedData) return JSON.parse(savedData);
+                } catch (error) {
+                    console.error("Error loading data:", error);
+                }
+                return this.initialData;
+            }
+
+            clearData() {
+                try { localStorage.removeItem(this.storageKey); } 
+                catch (error) { console.error("Error clearing data:", error); }
+            }
+        }
+
+        class DetectiveTimetable {
+            constructor() {
+                this.lastSavedText = this.getOrCreateElement('lastSavedText', 'last-saved-text');
+                this.table = document.querySelector('.timetable');
+                this.nameRow = this.table.querySelector('.name-row');
+                this.memoRow = this.table.querySelector('.memo-row');
+                this.tableBody = this.table.querySelector('tbody');
+                this.resetModal = document.getElementById('resetModal');
+                this.saveIndicator = document.getElementById('saveIndicator');
+
+                this.storage = new DetectiveTimetableStorage();
+                this.saveTimeout = null;
+                
+                this.longPressTimer = null;
+                this.LONG_PRESS_DURATION = 500; // 長押しの判定時間(ミリ秒)
+
+                this.handleMoveClick = this.handleMoveClick.bind(this);
+                this.handleInput = this.handleInput.bind(this);
+                this.finishTimeEditing = this.finishTimeEditing.bind(this);
+                this.handleTimeKeydown = this.handleTimeKeydown.bind(this);
+                
+                this.init();
+            }
+
+            getOrCreateElement(id, className) {
+                let element = document.getElementById(id);
+                if (!element) {
+                    element = document.createElement('div');
+                    element.id = id;
+                    element.className = className;
+                    document.body.appendChild(element);
+                }
+                return element;
+            }
+
+            init() {
+                this.loadSavedData();
+                this.setupEventListeners();
+                this.setupResetModal();
+                this.updateLastSavedIndicator();
+                this.updateTimeSelectOptions();
+            }
+
+            setupEventListeners() {
+                document.getElementById('addButton')?.addEventListener('click', () => this.addCharacter());
+                document.getElementById('removeButton')?.addEventListener('click', () => this.removeCharacters());
+                document.getElementById('addTimeButton')?.addEventListener('click', () => this.addTimeRows());
+                document.getElementById('removeTimeButton')?.addEventListener('click', () => this.removeTimeRows());
+
+                document.addEventListener('click', this.handleMoveClick);
+                document.addEventListener('input', this.handleInput);
+
+                this.tableBody.addEventListener('mousedown', this.handlePointerDown.bind(this));
+                this.tableBody.addEventListener('mouseup', this.clearLongPressTimer.bind(this));
+                this.tableBody.addEventListener('mouseleave', this.clearLongPressTimer.bind(this));
+                
+                this.tableBody.addEventListener('touchstart', this.handlePointerDown.bind(this), { passive: true });
+                this.tableBody.addEventListener('touchend', this.clearLongPressTimer.bind(this));
+                this.tableBody.addEventListener('touchmove', this.clearLongPressTimer.bind(this), { passive: true });
+                
+                // モバイルでの長押し時のコンテキストメニュー表示を防止
+                this.tableBody.addEventListener('contextmenu', (e) => {
+                    if (e.target.closest('.time-display')) {
+                        e.preventDefault();
+                    }
+                });
+            }
+
+            handlePointerDown(e) {
+                const target = e.target.closest('.time-display');
+                if (!target || target.isContentEditable) return;
+
+                this.clearLongPressTimer();
+                this.longPressTimer = setTimeout(() => {
+                    this.enableTimeEditing(target);
+                }, this.LONG_PRESS_DURATION);
+            }
+
+            clearLongPressTimer() {
+                if (this.longPressTimer) {
+                    clearTimeout(this.longPressTimer);
+                    this.longPressTimer = null;
+                }
+            }
+
+            enableTimeEditing(element) {
+                element.contentEditable = "true";
+                element.focus();
+                
+                // 全選択状態にする
+                const range = document.createRange();
+                range.selectNodeContents(element);
+                const sel = window.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(range);
+
+                element.addEventListener('blur', this.finishTimeEditing);
+                element.addEventListener('keydown', this.handleTimeKeydown);
+                
+                // 長押し検知時のバイブレーション（サポートされている場合）
+                if (navigator.vibrate) navigator.vibrate(50);
+            }
+
+            handleTimeKeydown(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    e.target.blur(); // エンターキーで確定
+                }
+            }
+
+            finishTimeEditing(e) {
+                const element = e.target;
+                element.contentEditable = "false";
+                
+                element.removeEventListener('blur', this.finishTimeEditing);
+                element.removeEventListener('keydown', this.handleTimeKeydown);
+
+                // 時刻フォーマットの自動修正（4桁入力への対応）
+                let val = element.textContent.trim().replace(/[０-９：]/g, s => String.fromCharCode(s.charCodeAt(0) - 0xFEE0));
+                
+                // 数字のみで4桁の場合、HH:mm形式に変換
+                if (/^\d{4}$/.test(val)) {
+                    val = val.slice(0, 2) + ":" + val.slice(2);
+                }
+                
+                element.textContent = val;
+
+                window.getSelection().removeAllRanges();
+
+                this.updateTimeSelectOptions();
+                this.autoSave();
+            }
+
+            handleInput(e) {
+                const target = e.target;
+                if (target.classList.contains('character-name-input') || 
+                    target.classList.contains('activity-cell') ||
+                    target.classList.contains('character-memo-textarea')) {
+                    
+                    if(target.classList.contains('character-memo-textarea')) {
+                        this.adjustTextareaHeight(target);
+                    }
+                    this.autoSave();
+                } else if (target.classList.contains('move-btn')) {
+                    // This is handled by handleMoveClick
+                }
+            }
+
+            handleMoveClick(e) {
+                if (!e.target.classList.contains('move-btn')) return;
+                const target = e.target;
+                const columnIndex = this.getColumnIndex(target);
+                if (columnIndex === -1) return;
+
+                if (target.classList.contains('move-left')) {
+                    this.moveColumnLeft(columnIndex);
+                } else if (target.classList.contains('move-right')) {
+                    this.moveColumnRight(columnIndex);
+                }
+            }
+
+            handleInput(e) {
+                const target = e.target;
+                if (target.classList.contains('character-name-input') || 
+                    target.classList.contains('activity-cell') ||
+                    target.classList.contains('character-memo-textarea')) {
+                    
+                    if(target.classList.contains('character-memo-textarea')) {
+                        this.adjustTextareaHeight(target);
+                    }
+                    this.autoSave();
+                }
+            }
+
+            getColumnIndex(button) {
+                const header = button.closest('.character-header');
+                const headers = Array.from(this.nameRow.querySelectorAll('.character-header'));
+                return headers.indexOf(header);
+            }
+
+            moveColumnLeft(columnIndex) {
+                const totalColumns = this.nameRow.querySelectorAll('.character-header').length;
+                const targetIndex = columnIndex === 0 ? totalColumns - 1 : columnIndex - 1;
+                this.swapColumns(columnIndex, targetIndex);
+            }
+
+            moveColumnRight(columnIndex) {
+                const totalColumns = this.nameRow.querySelectorAll('.character-header').length;
+                const targetIndex = columnIndex === totalColumns - 1 ? 0 : columnIndex + 1;
+                this.swapColumns(columnIndex, targetIndex);
+            }
+
+            swapColumns(index1, index2) {
+                const col1Data = this.extractColumnData(index1);
+                const col2Data = this.extractColumnData(index2);
+                this.setColumnData(index1, col2Data);
+                this.setColumnData(index2, col1Data);
+                this.autoSave();
+            }
+
+            extractColumnData(columnIndex) {
+                const nameHeaders = this.nameRow.querySelectorAll('.character-header');
+                const memoHeaders = this.memoRow.querySelectorAll('.character-memo-header');
+                const bodyRows = this.tableBody.querySelectorAll('tr');
+
+                return {
+                    name: nameHeaders[columnIndex]?.querySelector('input').value || '',
+                    memo: memoHeaders[columnIndex]?.querySelector('textarea').value || '',
+                    activities: Array.from(bodyRows).map(row => {
+                        const cells = row.querySelectorAll('.activity-cell');
+                        return cells[columnIndex] ? cells[columnIndex].innerHTML : '';
+                    })
+                };
+            }
+
+            setColumnData(columnIndex, data) {
+                const nameHeaders = this.nameRow.querySelectorAll('.character-header');
+                const memoHeaders = this.memoRow.querySelectorAll('.character-memo-header');
+                const bodyRows = this.tableBody.querySelectorAll('tr');
+
+                if (nameHeaders[columnIndex]) nameHeaders[columnIndex].querySelector('input').value = data.name;
+                if (memoHeaders[columnIndex]) memoHeaders[columnIndex].querySelector('textarea').value = data.memo;
+                
+                bodyRows.forEach((row, rowIndex) => {
+                    const cells = row.querySelectorAll('.activity-cell');
+                    if (cells[columnIndex]) cells[columnIndex].innerHTML = data.activities[rowIndex] || '';
+                });
+            }
+
+            loadSavedData() {
+                const data = this.storage.loadData();
+                if (data && data.lastSaved) this.restoreTableFromData(data);
+            }
+
+            restoreTableFromData(data) {
+                this.tableBody.innerHTML = '';
+                this.nameRow.querySelectorAll('.character-header').forEach(h => h.remove());
+                this.memoRow.querySelectorAll('.character-memo-header').forEach(h => h.remove());
+
+                data.characters.forEach((charName, index) => {
+                    this.addCharacterColumn(charName, false, (data.memos && data.memos[index]) ? data.memos[index] : '');
+                });
+
+                data.timeRows.forEach(time => {
+                    const tr = this.createTimeRow(time, data.characters.length);
+                    this.tableBody.appendChild(tr);
+                });
+
+                if (data.cellData) {
+                    const rows = this.tableBody.querySelectorAll('tr');
+                    Object.entries(data.cellData).forEach(([cellId, content]) => {
+                        const parts = cellId.split('-');
+                        if (parts.length === 4) {
+                            const r = parseInt(parts[1], 10), c = parseInt(parts[3], 10);
+                            if (rows[r]) {
+                                const cells = rows[r].querySelectorAll('.activity-cell');
+                                if (cells[c]) cells[c].innerHTML = content;
+                            }
+                        }
+                    });
+                }
+            }
+
+            saveCurrentState() {
+                const characters = Array.from(this.nameRow.querySelectorAll('input[type="text"]')).map(inp => inp.value);
+                const memos = Array.from(this.memoRow.querySelectorAll('textarea')).map(txt => txt.value);
+                const timeRows = Array.from(this.tableBody.querySelectorAll('.time-display')).map(td => td.textContent);
+                
+                const cellData = {};
+                this.tableBody.querySelectorAll('tr').forEach((row, rIdx) => {
+                    row.querySelectorAll('.activity-cell').forEach((cell, cIdx) => {
+                        if (cell.innerHTML.trim()) cellData[`row-${rIdx}-col-${cIdx}`] = cell.innerHTML;
+                    });
+                });
+
+                this.storage.saveData({ characters, memos, timeRows, cellData });
+                this.showSaveIndicator();
+                this.updateLastSavedIndicator();
+            }
+
+            autoSave() {
+                clearTimeout(this.saveTimeout);
+                this.saveTimeout = setTimeout(() => this.saveCurrentState(), 1000);
+            }
+
+            addCharacter() {
+                this.addCharacterColumn('新しい人物', true);
+            }
+
+            addCharacterColumn(characterName = '新しい人物', shouldAutoSave = true, memoValue = '') {
+                // Name Header
+                const newNameHeader = document.createElement('th');
+                newNameHeader.className = 'character-header fade-in';
+                newNameHeader.innerHTML = `
+                    <div class="character-name-row">
+                        <input type="text" class="character-name-input" value="${characterName}" placeholder="人物名">
+                    </div>
+                    <div class="character-controls-row">
+                        <button class="move-btn move-left">←</button>
+                        <input type="checkbox" class="delete-checkbox">
+                        <button class="move-btn move-right">→</button>
+                    </div>
+                `;
+                this.nameRow.appendChild(newNameHeader);
+
+                // Memo Header
+                const newMemoHeader = document.createElement('th');
+                newMemoHeader.className = 'character-memo-header fade-in';
+                newMemoHeader.innerHTML = `
+                    <textarea class="character-memo-textarea" placeholder="メモ..." rows="2">${memoValue}</textarea>
+                `;
+                this.memoRow.appendChild(newMemoHeader);
+                this.adjustTextareaHeight(newMemoHeader.querySelector('textarea'));
+
+                // Add empty cells to all time rows
+                this.tableBody.querySelectorAll('tr').forEach(row => {
+                    const newCell = document.createElement('td');
+                    newCell.className = 'activity-cell fade-in';
+                    newCell.contentEditable = 'true';
+                    row.appendChild(newCell);
+                });
+
+                if (shouldAutoSave) {
+                    this.autoSave();
+                    this.showNotification('人物を追加しました', 'success');
+                }
+            }
+
+            removeCharacters() {
+                const nameHeaders = Array.from(this.nameRow.querySelectorAll('.character-header'));
+                const memoHeaders = Array.from(this.memoRow.querySelectorAll('.character-memo-header'));
+                const bodyRows = this.tableBody.querySelectorAll('tr');
+
+                let indicesToRemove = [];
+                nameHeaders.forEach((h, i) => {
+                    if (h.querySelector('.delete-checkbox')?.checked) indicesToRemove.push(i);
+                });
+
+                if (nameHeaders.length - indicesToRemove.length < 1 && indicesToRemove.length > 0) {
+                    return this.showNotification('最低1人の人物が必要です', 'warning');
+                }
+
+                if (indicesToRemove.length === 0) {
+                    return this.showNotification('削除する人物にチェックを入れてください', 'warning');
+                }
+
+                // Remove backwards to prevent index shifting
+                for (let i = indicesToRemove.length - 1; i >= 0; i--) {
+                    const idx = indicesToRemove[i];
+                    nameHeaders[idx].remove();
+                    memoHeaders[idx].remove();
+                    bodyRows.forEach(row => {
+                        const cells = row.querySelectorAll('.activity-cell');
+                        if (cells[idx]) cells[idx].remove();
+                    });
+                }
+                
+                this.autoSave();
+                this.showNotification(`${indicesToRemove.length}人の人物を削除しました`, 'success');
+            }
+
+            addTimeRows() {
+                const interval = parseInt(document.getElementById('time-interval').value, 10);
+                const baseTimeStr = document.getElementById('insert-time').value;
+                const insertBefore = document.getElementById('insert-before').checked;
+                
+                if (!baseTimeStr) return this.showNotification('基準時間を選択してください', 'warning');
+
+                const newTimeStr = this.calculateNewTime(baseTimeStr, interval, !insertBefore);
+                const charCount = this.nameRow.querySelectorAll('.character-header').length;
+                const newRow = this.createTimeRow(newTimeStr, charCount);
+                newRow.classList.add('fade-in');
+
+                const existingRows = Array.from(this.tableBody.querySelectorAll('tr'));
+                const refRow = existingRows.find(r => r.querySelector('.time-display').textContent === baseTimeStr);
+
+                if (refRow) {
+                    if (insertBefore) this.tableBody.insertBefore(newRow, refRow);
+                    else refRow.nextSibling ? this.tableBody.insertBefore(newRow, refRow.nextSibling) : this.tableBody.appendChild(newRow);
+                    
+                    this.updateTimeSelectOptions();
+                    setTimeout(() => document.getElementById('insert-time').value = newTimeStr, 50);
+                    this.autoSave();
+                    this.showNotification(`時間を追加しました (${newTimeStr})`, 'success');
+                }
+            }
+
+            calculateNewTime(baseTime, intervalMinutes, add) {
+                let [hours, minutes] = baseTime.split(':').map(Number);
+                if (add) {
+                    minutes += intervalMinutes;
+                    while (minutes >= 60) { minutes -= 60; hours = (hours + 1) % 24; }
+                } else {
+                    minutes -= intervalMinutes;
+                    while (minutes < 0) { minutes += 60; hours = (hours - 1 + 24) % 24; }
+                }
+                return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+            }
+
+            createTimeRow(time, charCount) {
+                const tr = document.createElement('tr');
+                tr.className = 'table-row';
+                tr.innerHTML = `
+                    <td class="time-cell">
+                        <div class="time-cell-content">
+                            <input type="checkbox" class="time-delete-checkbox">
+                            <span class="time-display">${time}</span>
+                        </div>
+                    </td>
+                `;
+                for (let i = 0; i < charCount; i++) {
+                    const td = document.createElement('td');
+                    td.className = 'activity-cell';
+                    td.contentEditable = 'true';
+                    tr.appendChild(td);
+                }
+                return tr;
+            }
+
+            removeTimeRows() {
+                const rows = Array.from(this.tableBody.querySelectorAll('tr'));
+                let removed = 0;
+                
+                const toRemove = rows.filter(r => r.querySelector('.time-delete-checkbox')?.checked);
+                if (rows.length - toRemove.length < 1 && toRemove.length > 0) {
+                    return this.showNotification('最低1つの時間行が必要です', 'warning');
+                }
+                if (toRemove.length === 0) {
+                    return this.showNotification('削除する時間にチェックを入れてください', 'warning');
+                }
+
+                for (let i = rows.length - 1; i >= 0; i--) {
+                    if (rows[i].querySelector('.time-delete-checkbox')?.checked) {
+                        rows[i].remove();
+                        removed++;
+                    }
+                }
+                
+                this.updateTimeSelectOptions();
+                this.autoSave();
+                this.showNotification(`${removed}行の時間を削除しました`, 'success');
+            }
+
+            updateTimeSelectOptions() {
+                const select = document.getElementById('insert-time');
+                if (!select) return;
+                
+                const times = Array.from(this.tableBody.querySelectorAll('.time-display')).map(td => td.textContent);
+                select.innerHTML = '';
+                times.forEach(t => {
+                    const opt = document.createElement('option');
+                    opt.value = t; opt.textContent = t;
+                    select.appendChild(opt);
+                });
+            }
+
+            adjustTextareaHeight(textarea) {
+                textarea.style.height = 'auto';
+                textarea.style.height = Math.min(Math.max(textarea.scrollHeight, 32), 80) + 'px';
+            }
+
+            setupResetModal() {
+                document.getElementById('resetButton')?.addEventListener('click', () => this.resetModal.classList.remove('hidden'));
+                document.getElementById('cancelReset')?.addEventListener('click', () => this.resetModal.classList.add('hidden'));
+                document.getElementById('confirmReset')?.addEventListener('click', () => {
+                    this.storage.clearData();
+                    location.reload();
+                });
+            }
+
+            showSaveIndicator() {
+                this.saveIndicator.classList.remove('hidden');
+                setTimeout(() => this.saveIndicator.classList.add('hidden'), 1500);
+            }
+
+            updateLastSavedIndicator() {
+                const data = this.storage.loadData();
+                if (data?.lastSaved) {
+                    const d = new Date(data.lastSaved);
+                    this.lastSavedText.textContent = `最終保存: ${d.toLocaleTimeString('ja-JP', {hour:'2-digit', minute:'2-digit'})}`;
+                }
+            }
+
+            showNotification(msg, type = 'info') {
+                const div = document.createElement('div');
+                div.textContent = msg;
+                div.style.cssText = `
+                    position: fixed; bottom: 20px; right: 20px; padding: 12px 24px; border-radius: 8px;
+                    color: #fff; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                    transition: all 0.3s; opacity: 0; transform: translateY(20px);
+                `;
+                if (type === 'success') div.style.backgroundColor = '#32b8c6';
+                else if (type === 'error') div.style.backgroundColor = '#8b0000';
+                else if (type === 'warning') div.style.backgroundColor = '#ff6b35';
+                else div.style.backgroundColor = '#16213e';
+
+                document.body.appendChild(div);
+                requestAnimationFrame(() => { div.style.opacity = '1'; div.style.transform = 'translateY(0)'; });
+                
+                setTimeout(() => {
+                    div.style.opacity = '0'; div.style.transform = 'translateY(20px)';
+                    setTimeout(() => div.remove(), 300);
+                }, 3000);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.app = new DetectiveTimetable();
+        });
+    </script>
+</body>
+</html>
