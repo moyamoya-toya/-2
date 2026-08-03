@@ -32,6 +32,7 @@
           --color-red-500: rgba(192, 21, 47, 1);
           --color-orange-400: rgba(230, 129, 97, 1);
           --color-orange-500: rgba(168, 75, 47, 1);
+          --col-width: 180px;
 
           /* Detective Theme Color Palette */
           --color-primary-dark: #1a1a2e;
@@ -256,19 +257,22 @@
         }
 
         .table-wrapper {
-          overflow: auto;
+          overflow-x: auto;
+          overflow-y: auto;
           border-radius: var(--radius-lg);
           box-shadow: inset 0 0 0 1px var(--color-border-subtle);
           max-height: 70vh;
           position: relative;
+          width: 100%;
         }
 
         .timetable {
-          width: 100%;
+          width: max-content;
+          min-width: 100%;
           border-collapse: separate;
           border-spacing: 0;
           background: rgba(255, 255, 255, 0.02);
-          table-layout: fixed;
+          table-layout: auto;
         }
 
         .timetable thead tr {
@@ -289,19 +293,19 @@
           font-family: var(--font-display);
           font-weight: 600;
           color: var(--color-accent-gold);
-          min-width: 120px;
+          min-width: 140px;
           border-right: 1px solid var(--color-border-subtle);
           box-shadow: 1px 0 0 0 var(--color-border-subtle);
         }
 
-        .character-header {
-          padding: 4px;
-          text-align: center;
-          background: var(--color-primary-dark) !important;
-          border-right: 1px solid var(--color-border-subtle);
-          min-width: 150px;
-          max-width: 150px;
-        }
+.character-header {
+  padding: 4px;
+  text-align: center;
+  background: var(--color-primary-dark) !important;
+  border-right: 1px solid var(--color-border-subtle);
+  width: var(--col-width);     /* ← min-width から width に変更 */
+  min-width: 0;               /* ← 最小幅の制限を解除 */
+}
 
         .character-name-input {
           width: 100%;
@@ -336,26 +340,36 @@
           border: 1px solid var(--color-border-subtle);
           border-radius: 2px;
           cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          line-height: 1;
         }
 
-        .character-memo-header {
-          padding: 4px;
-          background: var(--color-primary-dark) !important;
-          border-right: 1px solid var(--color-border-subtle);
-          min-width: 150px;
-          max-width: 150px;
+        .move-btn:hover {
+          background: rgba(255, 215, 0, 0.2);
+          border-color: var(--color-accent-gold);
         }
 
-        .character-memo-textarea {
-          width: 100%;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid var(--color-border-subtle);
-          border-radius: var(--radius-sm);
-          padding: 4px;
-          color: var(--color-text-light);
-          font-size: 11px;
-          resize: none;
-        }
+.character-memo-header {
+  padding: 4px;
+  background: var(--color-primary-dark) !important;
+  border-right: 1px solid var(--color-border-subtle);
+  width: var(--col-width);     /* ← min-width から width に変更 */
+  min-width: 0;               /* ← 最小幅の制限を解除 */
+}
+
+.character-memo-textarea {
+  width: 100%;
+  min-width: 0; /* ← 追加：親要素に合わせて小さくなれるようにする */
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 4px;
+  color: var(--color-text-light);
+  font-size: 11px;
+  resize: none;
+}
 
         .table-row:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
         .table-row:hover { background: rgba(255, 215, 0, 0.05); }
@@ -366,17 +380,23 @@
           left: 0;
           z-index: 9;
           background: var(--color-primary-dark) !important;
-          padding: var(--space-md);
+          padding: var(--space-xs) var(--space-sm);
           border-right: 1px solid var(--color-border-subtle);
           border-bottom: 1px solid var(--color-border-subtle);
-          min-width: 120px;
+          min-width: 140px;
         }
 
         .time-cell-content {
           display: flex;
           align-items: center;
-          gap: var(--space-sm);
-          justify-content: center;
+          gap: 4px;
+          justify-content: space-between;
+        }
+
+        .time-controls-col {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
         }
         
         .time-display {
@@ -384,7 +404,7 @@
           font-weight: 600;
           color: var(--color-accent-gold);
           cursor: pointer;
-          padding: 4px 8px;
+          padding: 4px 6px;
           border-radius: var(--radius-sm);
           transition: background-color 0.2s;
           user-select: none;
@@ -409,8 +429,11 @@
           border-right: 1px solid var(--color-border-subtle);
           border-bottom: 1px solid var(--color-border-subtle);
           min-height: 60px;
+          min-width: var(--col-width);
           vertical-align: top;
           transition: var(--transition-fast);
+          white-space: pre-wrap;
+          word-break: break-word;
         }
 
         .activity-cell:focus {
@@ -445,7 +468,6 @@
           font-weight: bold;
         }
 
-        /* Modals and Overlays */
         .modal {
           position: fixed;
           inset: 0;
@@ -508,19 +530,19 @@
     <div class="app-container">
         <!-- Control Panel -->
         <div class="control-panel">
-            <!-- Character and Data Controls -->
             <div class="control-group">
                 <h3 class="control-title">人物管理</h3>
                 <div class="button-group">
-                    <button id="addButton" class="btn btn--primary">
-                        <span class="btn-icon">+</span> 追加
-                    </button>
-                    <button id="removeButton" class="btn btn--secondary">
-                        <span class="btn-icon">-</span> 削除
-                    </button>
-                    <button id="resetButton" class="btn btn--warning">
-                        <span class="btn-icon">⚠️</span> リセット
-                    </button>
+                    <button id="addButton" class="btn btn--primary"><span class="btn-icon">+</span> 追加</button>
+                    <button id="removeButton" class="btn btn--secondary"><span class="btn-icon">-</span> 削除</button>
+                    <button id="resetButton" class="btn btn--warning"><span class="btn-icon">⚠️</span> リセット</button>
+                </div>
+                
+                <div class="size-controls" style="margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="font-size: 0.85rem; color: var(--color-text-secondary);">列の幅:</span>
+                    <button id="zoomOutBtn" class="btn btn--secondary" style="padding: 4px 10px;" title="縮小（一覧表示）">-</button>
+                    <button id="zoomResetBtn" class="btn btn--secondary" style="padding: 4px 10px;" title="標準サイズ">100%</button>
+                    <button id="zoomInBtn" class="btn btn--secondary" style="padding: 4px 10px;" title="拡大">+</button>
                 </div>
             </div>
 
@@ -556,7 +578,6 @@
             <div class="table-wrapper">
                 <table class="timetable">
                     <thead>
-                        <!-- Character Name and Controls Row -->
                         <tr class="name-row">
                             <th class="time-header" rowspan="2">時間</th>
                             <th class="character-header">
@@ -590,7 +611,6 @@
                                 </div>
                             </th>
                         </tr>
-                        <!-- Character Memo Row -->
                         <tr class="memo-row">
                             <th class="character-memo-header">
                                 <textarea class="character-memo-textarea" placeholder="メモA..." rows="2"></textarea>
@@ -609,6 +629,10 @@
                                 <div class="time-cell-content">
                                     <input type="checkbox" class="time-delete-checkbox">
                                     <span class="time-display">08:00</span>
+                                    <div class="time-controls-col">
+                                        <button class="move-btn move-up">↑</button>
+                                        <button class="move-btn move-down">↓</button>
+                                    </div>
                                 </div>
                             </td>
                             <td class="activity-cell" contenteditable="true"></td>
@@ -620,6 +644,10 @@
                                 <div class="time-cell-content">
                                     <input type="checkbox" class="time-delete-checkbox">
                                     <span class="time-display">09:00</span>
+                                    <div class="time-controls-col">
+                                        <button class="move-btn move-up">↑</button>
+                                        <button class="move-btn move-down">↓</button>
+                                    </div>
                                 </div>
                             </td>
                             <td class="activity-cell" contenteditable="true"></td>
@@ -631,6 +659,10 @@
                                 <div class="time-cell-content">
                                     <input type="checkbox" class="time-delete-checkbox">
                                     <span class="time-display">10:00</span>
+                                    <div class="time-controls-col">
+                                        <button class="move-btn move-up">↑</button>
+                                        <button class="move-btn move-down">↓</button>
+                                    </div>
                                 </div>
                             </td>
                             <td class="activity-cell" contenteditable="true"></td>
@@ -716,12 +748,15 @@
                 this.saveTimeout = null;
                 
                 this.longPressTimer = null;
-                this.LONG_PRESS_DURATION = 500; // 長押しの判定時間(ミリ秒)
+                this.LONG_PRESS_DURATION = 500;
 
                 this.handleMoveClick = this.handleMoveClick.bind(this);
                 this.handleInput = this.handleInput.bind(this);
                 this.finishTimeEditing = this.finishTimeEditing.bind(this);
                 this.handleTimeKeydown = this.handleTimeKeydown.bind(this);
+                this.currentColWidth = 180;
+                this.MIN_COL_WIDTH = 20;
+                this.MAX_COL_WIDTH = 300;
                 
                 this.init();
             }
@@ -743,6 +778,7 @@
                 this.setupResetModal();
                 this.updateLastSavedIndicator();
                 this.updateTimeSelectOptions();
+                this.setColumnWidth(this.currentColWidth);
             }
 
             setupEventListeners() {
@@ -750,6 +786,10 @@
                 document.getElementById('removeButton')?.addEventListener('click', () => this.removeCharacters());
                 document.getElementById('addTimeButton')?.addEventListener('click', () => this.addTimeRows());
                 document.getElementById('removeTimeButton')?.addEventListener('click', () => this.removeTimeRows());
+
+                document.getElementById('zoomInBtn')?.addEventListener('click', () => this.changeColumnWidth(20));
+                document.getElementById('zoomOutBtn')?.addEventListener('click', () => this.changeColumnWidth(-20));
+                document.getElementById('zoomResetBtn')?.addEventListener('click', () => this.setColumnWidth(180));
 
                 document.addEventListener('click', this.handleMoveClick);
                 document.addEventListener('input', this.handleInput);
@@ -762,12 +802,27 @@
                 this.tableBody.addEventListener('touchend', this.clearLongPressTimer.bind(this));
                 this.tableBody.addEventListener('touchmove', this.clearLongPressTimer.bind(this), { passive: true });
                 
-                // モバイルでの長押し時のコンテキストメニュー表示を防止
                 this.tableBody.addEventListener('contextmenu', (e) => {
                     if (e.target.closest('.time-display')) {
                         e.preventDefault();
                     }
                 });
+            }
+
+            changeColumnWidth(delta) {
+                const newWidth = Math.min(Math.max(this.currentColWidth + delta, this.MIN_COL_WIDTH), this.MAX_COL_WIDTH);
+                this.setColumnWidth(newWidth);
+            }
+
+            setColumnWidth(width) {
+                this.currentColWidth = width;
+                document.documentElement.style.setProperty('--col-width', `${width}px`);
+                
+                const percentage = Math.round((width / 180) * 100);
+                const resetBtn = document.getElementById('zoomResetBtn');
+                if (resetBtn) {
+                    resetBtn.textContent = `${percentage}%`;
+                }
             }
 
             handlePointerDown(e) {
@@ -791,7 +846,6 @@
                 element.contentEditable = "true";
                 element.focus();
                 
-                // 全選択状態にする
                 const range = document.createRange();
                 range.selectNodeContents(element);
                 const sel = window.getSelection();
@@ -801,14 +855,13 @@
                 element.addEventListener('blur', this.finishTimeEditing);
                 element.addEventListener('keydown', this.handleTimeKeydown);
                 
-                // 長押し検知時のバイブレーション（サポートされている場合）
                 if (navigator.vibrate) navigator.vibrate(50);
             }
 
             handleTimeKeydown(e) {
                 if (e.key === 'Enter') {
                     e.preventDefault();
-                    e.target.blur(); // エンターキーで確定
+                    e.target.blur();
                 }
             }
 
@@ -819,10 +872,8 @@
                 element.removeEventListener('blur', this.finishTimeEditing);
                 element.removeEventListener('keydown', this.handleTimeKeydown);
 
-                // 時刻フォーマットの自動修正（4桁入力への対応）
                 let val = element.textContent.trim().replace(/[０-９：]/g, s => String.fromCharCode(s.charCodeAt(0) - 0xFEE0));
                 
-                // 数字のみで4桁の場合、HH:mm形式に変換
                 if (/^\d{4}$/.test(val)) {
                     val = val.slice(0, 2) + ":" + val.slice(2);
                 }
@@ -835,31 +886,49 @@
                 this.autoSave();
             }
 
-            handleInput(e) {
+            handleMoveClick(e) {
                 const target = e.target;
-                if (target.classList.contains('character-name-input') || 
-                    target.classList.contains('activity-cell') ||
-                    target.classList.contains('character-memo-textarea')) {
-                    
-                    if(target.classList.contains('character-memo-textarea')) {
-                        this.adjustTextareaHeight(target);
+                if (!target.classList.contains('move-btn')) return;
+
+                // 左右移動（列の移動）
+                if (target.classList.contains('move-left') || target.classList.contains('move-right')) {
+                    const columnIndex = this.getColumnIndex(target);
+                    if (columnIndex === -1) return;
+
+                    if (target.classList.contains('move-left')) {
+                        this.moveColumnLeft(columnIndex);
+                    } else if (target.classList.contains('move-right')) {
+                        this.moveColumnRight(columnIndex);
                     }
-                    this.autoSave();
-                } else if (target.classList.contains('move-btn')) {
-                    // This is handled by handleMoveClick
+                } 
+                // 上下移動（行の移動）
+                else if (target.classList.contains('move-up') || target.classList.contains('move-down')) {
+                    const row = target.closest('tr');
+                    if (!row) return;
+
+                    if (target.classList.contains('move-up')) {
+                        this.moveRowUp(row);
+                    } else if (target.classList.contains('move-down')) {
+                        this.moveRowDown(row);
+                    }
                 }
             }
 
-            handleMoveClick(e) {
-                if (!e.target.classList.contains('move-btn')) return;
-                const target = e.target;
-                const columnIndex = this.getColumnIndex(target);
-                if (columnIndex === -1) return;
+            moveRowUp(row) {
+                const previousRow = row.previousElementSibling;
+                if (previousRow && previousRow.classList.contains('table-row')) {
+                    this.tableBody.insertBefore(row, previousRow);
+                    this.updateTimeSelectOptions();
+                    this.autoSave();
+                }
+            }
 
-                if (target.classList.contains('move-left')) {
-                    this.moveColumnLeft(columnIndex);
-                } else if (target.classList.contains('move-right')) {
-                    this.moveColumnRight(columnIndex);
+            moveRowDown(row) {
+                const nextRow = row.nextElementSibling;
+                if (nextRow && nextRow.classList.contains('table-row')) {
+                    this.tableBody.insertBefore(nextRow, row);
+                    this.updateTimeSelectOptions();
+                    this.autoSave();
                 }
             }
 
@@ -992,7 +1061,6 @@
             }
 
             addCharacterColumn(characterName = '新しい人物', shouldAutoSave = true, memoValue = '') {
-                // Name Header
                 const newNameHeader = document.createElement('th');
                 newNameHeader.className = 'character-header fade-in';
                 newNameHeader.innerHTML = `
@@ -1007,7 +1075,6 @@
                 `;
                 this.nameRow.appendChild(newNameHeader);
 
-                // Memo Header
                 const newMemoHeader = document.createElement('th');
                 newMemoHeader.className = 'character-memo-header fade-in';
                 newMemoHeader.innerHTML = `
@@ -1016,7 +1083,6 @@
                 this.memoRow.appendChild(newMemoHeader);
                 this.adjustTextareaHeight(newMemoHeader.querySelector('textarea'));
 
-                // Add empty cells to all time rows
                 this.tableBody.querySelectorAll('tr').forEach(row => {
                     const newCell = document.createElement('td');
                     newCell.className = 'activity-cell fade-in';
@@ -1048,7 +1114,6 @@
                     return this.showNotification('削除する人物にチェックを入れてください', 'warning');
                 }
 
-                // Remove backwards to prevent index shifting
                 for (let i = indicesToRemove.length - 1; i >= 0; i--) {
                     const idx = indicesToRemove[i];
                     nameHeaders[idx].remove();
@@ -1109,6 +1174,10 @@
                         <div class="time-cell-content">
                             <input type="checkbox" class="time-delete-checkbox">
                             <span class="time-display">${time}</span>
+                            <div class="time-controls-col">
+                                <button class="move-btn move-up">↑</button>
+                                <button class="move-btn move-down">↓</button>
+                            </div>
                         </div>
                     </td>
                 `;
