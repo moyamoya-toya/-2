@@ -32,7 +32,7 @@
           --color-red-500: rgba(192, 21, 47, 1);
           --color-orange-400: rgba(230, 129, 97, 1);
           --color-orange-500: rgba(168, 75, 47, 1);
-          --col-width: 180px;
+          --col-width: 140px;
 
           /* Detective Theme Color Palette */
           --color-primary-dark: #1a1a2e;
@@ -107,22 +107,22 @@
 
         .app-container {
           margin: 0 auto;
-          padding: 20px;
+          padding: 10px;
           max-width: 1280px;
         }
 
         .control-panel {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-          gap: var(--space-lg);
-          margin-bottom: var(--space-2xl);
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: var(--space-md);
+          margin-bottom: var(--space-lg);
         }
 
         .control-group {
           background: rgba(255, 255, 255, 0.03);
           border: 1px solid var(--color-border-subtle);
           border-radius: var(--radius-lg);
-          padding: var(--space-lg);
+          padding: var(--space-md);
           backdrop-filter: blur(10px);
           box-shadow: var(--shadow-subtle);
           transition: var(--transition-medium);
@@ -135,21 +135,21 @@
 
         .control-title {
           font-family: var(--font-display);
-          font-size: 1.25rem;
+          font-size: 1.1rem;
           color: var(--color-accent-gold);
-          margin-bottom: var(--space-lg);
+          margin-bottom: var(--space-md);
           font-weight: 600;
         }
 
         .button-group {
           display: flex;
-          gap: var(--space-md);
+          gap: var(--space-xs);
           flex-wrap: wrap;
         }
 
         .time-controls-simplified {
           display: flex;
-          gap: var(--space-md);
+          gap: var(--space-xs);
           align-items: center;
           flex-wrap: wrap;
         }
@@ -162,18 +162,18 @@
         .radio-group {
             display: flex;
             align-items: center;
-            gap: var(--space-sm);
+            gap: 4px;
         }
 
         .btn {
           display: inline-flex;
           align-items: center;
-          gap: var(--space-sm);
-          padding: var(--space-sm) var(--space-lg);
+          gap: 4px;
+          padding: 6px 12px;
           border: none;
           border-radius: var(--radius-md);
           font-family: var(--font-body);
-          font-size: 0.875rem;
+          font-size: 0.8rem;
           font-weight: 500;
           text-decoration: none;
           cursor: pointer;
@@ -211,6 +211,12 @@
           border: 1px solid var(--color-border-subtle);
         }
 
+        .btn--secondary.active {
+          background: rgba(255, 215, 0, 0.25);
+          border-color: var(--color-accent-gold);
+          color: var(--color-accent-gold);
+        }
+
         .btn--accent {
           background: linear-gradient(135deg, var(--color-accent-amber), #ff8c00);
           color: var(--color-primary-dark);
@@ -231,9 +237,9 @@
             color: var(--color-text-light);
             border: 1px solid var(--color-border-subtle);
             border-radius: var(--radius-md);
-            padding: var(--space-sm);
-            font-size: 1rem;
-            min-width: 100px;
+            padding: 4px 8px;
+            font-size: 0.9rem;
+            min-width: 60px;
         }
 
         .form-control:focus {
@@ -261,7 +267,7 @@
           overflow-y: auto;
           border-radius: var(--radius-lg);
           box-shadow: inset 0 0 0 1px var(--color-border-subtle);
-          max-height: 70vh;
+          max-height: 75vh;
           position: relative;
           width: 100%;
         }
@@ -280,32 +286,43 @@
         }
 
         .name-row { top: 0; z-index: 11; border-bottom: 1px solid var(--color-border-strong); background: var(--color-primary-dark) !important; }
-        .memo-row { top: 60px; z-index: 10; border-bottom: 2px solid var(--color-border-strong); background: var(--color-primary-dark) !important; }
+        .memo-row { top: 52px; z-index: 10; border-bottom: 2px solid var(--color-border-strong); background: var(--color-primary-dark) !important; }
 
+        /* ▼ 時間ヘッダー・セルの幅をコンパクトに調整 */
         .time-header {
           position: sticky;
           left: 0;
           top: 0;
           z-index: 12;
           background: var(--color-primary-dark) !important;
-          padding: var(--space-lg);
+          padding: 8px 2px;
           text-align: center;
           font-family: var(--font-display);
           font-weight: 600;
           color: var(--color-accent-gold);
-          min-width: 140px;
+          width: 55px;
+          min-width: 55px;
+          max-width: 80px;
+          font-size: 0.85rem;
           border-right: 1px solid var(--color-border-subtle);
           box-shadow: 1px 0 0 0 var(--color-border-subtle);
+          transition: width 0.2s, min-width 0.2s;
         }
 
-.character-header {
-  padding: 4px;
-  text-align: center;
-  background: var(--color-primary-dark) !important;
-  border-right: 1px solid var(--color-border-subtle);
-  width: var(--col-width);     /* ← min-width から width に変更 */
-  min-width: 0;               /* ← 最小幅の制限を解除 */
-}
+        /* 操作コントロール表示時のヘッダー幅拡大 */
+        .timetable.show-time-controls .time-header {
+          width: 80px;
+          min-width: 80px;
+        }
+
+        .character-header {
+          padding: 4px;
+          text-align: center;
+          background: var(--color-primary-dark) !important;
+          border-right: 1px solid var(--color-border-subtle);
+          width: var(--col-width);
+          min-width: 0;
+        }
 
         .character-name-input {
           width: 100%;
@@ -316,6 +333,7 @@
           color: var(--color-text-light);
           text-align: center;
           margin-bottom: 4px;
+          font-size: 0.85rem;
         }
 
         .character-name-input:focus {
@@ -332,9 +350,9 @@
         }
         
         .move-btn {
-          width: 20px;
+          width: 16px;
           height: 16px;
-          font-size: 10px;
+          font-size: 8px;
           background: rgba(255, 255, 255, 0.1);
           color: var(--color-text-light);
           border: 1px solid var(--color-border-subtle);
@@ -344,6 +362,7 @@
           align-items: center;
           justify-content: center;
           line-height: 1;
+          padding: 0;
         }
 
         .move-btn:hover {
@@ -351,52 +370,76 @@
           border-color: var(--color-accent-gold);
         }
 
-.character-memo-header {
-  padding: 4px;
-  background: var(--color-primary-dark) !important;
-  border-right: 1px solid var(--color-border-subtle);
-  width: var(--col-width);     /* ← min-width から width に変更 */
-  min-width: 0;               /* ← 最小幅の制限を解除 */
-}
+        .character-memo-header {
+          padding: 4px;
+          background: var(--color-primary-dark) !important;
+          border-right: 1px solid var(--color-border-subtle);
+          width: var(--col-width);
+          min-width: 0;
+        }
 
-.character-memo-textarea {
-  width: 100%;
-  min-width: 0; /* ← 追加：親要素に合わせて小さくなれるようにする */
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-sm);
-  padding: 4px;
-  color: var(--color-text-light);
-  font-size: 11px;
-  resize: none;
-}
+        .character-memo-textarea {
+          width: 100%;
+          min-width: 0;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid var(--color-border-subtle);
+          border-radius: var(--radius-sm);
+          padding: 4px;
+          color: var(--color-text-light);
+          font-size: 11px;
+          resize: none;
+        }
 
         .table-row:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
         .table-row:hover { background: rgba(255, 215, 0, 0.05); }
         .table-row:nth-child(even):hover { background: rgba(255, 215, 0, 0.08); }
 
+        /* ▼ 時間セル */
         .time-cell {
           position: sticky;
           left: 0;
           z-index: 9;
           background: var(--color-primary-dark) !important;
-          padding: var(--space-xs) var(--space-sm);
+          padding: 4px 2px;
           border-right: 1px solid var(--color-border-subtle);
           border-bottom: 1px solid var(--color-border-subtle);
-          min-width: 140px;
+          width: 55px;
+          min-width: 55px;
+          max-width: 80px;
+          transition: width 0.2s, min-width 0.2s;
+        }
+
+        .timetable.show-time-controls .time-cell {
+          width: 80px;
+          min-width: 80px;
         }
 
         .time-cell-content {
           display: flex;
           align-items: center;
-          gap: 4px;
-          justify-content: space-between;
+          gap: 2px;
+          justify-content: center;
         }
 
         .time-controls-col {
-          display: flex;
+          display: none; /* デフォルト非表示 */
           flex-direction: column;
-          gap: 2px;
+          gap: 1px;
+        }
+
+        .time-delete-checkbox {
+          display: none; /* デフォルト非表示 */
+        }
+
+        /* コントロール表示時のスタイル切り替え */
+        .timetable.show-time-controls .time-cell-content {
+          justify-content: space-between;
+        }
+        .timetable.show-time-controls .time-controls-col {
+          display: flex;
+        }
+        .timetable.show-time-controls .time-delete-checkbox {
+          display: block;
         }
         
         .time-display {
@@ -404,11 +447,13 @@
           font-weight: 600;
           color: var(--color-accent-gold);
           cursor: pointer;
-          padding: 4px 6px;
+          padding: 2px 0;
           border-radius: var(--radius-sm);
           transition: background-color 0.2s;
           user-select: none;
           -webkit-user-select: none;
+          font-size: 0.85rem;
+          text-align: center;
         }
 
         .time-display:hover {
@@ -425,15 +470,16 @@
         }
 
         .activity-cell {
-          padding: var(--space-md);
+          padding: 6px;
           border-right: 1px solid var(--color-border-subtle);
           border-bottom: 1px solid var(--color-border-subtle);
-          min-height: 60px;
+          min-height: 50px;
           min-width: var(--col-width);
           vertical-align: top;
           transition: var(--transition-fast);
           white-space: pre-wrap;
           word-break: break-word;
+          font-size: 0.85rem;
         }
 
         .activity-cell:focus {
@@ -444,13 +490,14 @@
 
         input[type="checkbox"] {
           appearance: none;
-          width: 16px;
-          height: 16px;
+          width: 13px;
+          height: 13px;
           border: 1px solid var(--color-border-subtle);
           border-radius: 3px;
           background: rgba(255, 255, 255, 0.1);
           cursor: pointer;
           position: relative;
+          flex-shrink: 0;
         }
 
         input[type="checkbox"]:checked {
@@ -464,7 +511,7 @@
           left: 50%;
           transform: translate(-50%, -50%);
           color: var(--color-primary-dark);
-          font-size: 10px;
+          font-size: 8px;
           font-weight: bold;
         }
 
@@ -491,7 +538,7 @@
           border: 1px solid var(--color-border-strong);
           border-radius: var(--radius-xl);
           padding: var(--space-xl);
-          max-width: 400px;
+          max-width: 320px;
           position: relative;
           text-align: center;
         }
@@ -508,14 +555,15 @@
           gap: 8px;
           z-index: 999;
           transition: opacity 0.3s;
+          font-size: 0.8rem;
         }
         .save-indicator.hidden { opacity: 0; pointer-events: none; }
 
         .last-saved-text {
             position: fixed;
-            bottom: 20px;
-            left: 20px;
-            font-size: 0.8rem;
+            bottom: 10px;
+            left: 10px;
+            font-size: 0.75rem;
             color: var(--color-text-muted);
             z-index: 900;
         }
@@ -524,6 +572,25 @@
         
         .fade-in { animation: fadeIn 0.3s ease-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        @media (max-width: 600px) {
+          :root {
+            --col-width: 130px;
+          }
+          .app-container {
+            padding: 5px;
+          }
+          .control-panel {
+            gap: 8px;
+          }
+          .control-group {
+            padding: 10px;
+          }
+          .btn {
+            padding: 5px 8px;
+            font-size: 0.75rem;
+          }
+        }
     </style>
 </head>
 <body>
@@ -538,17 +605,22 @@
                     <button id="resetButton" class="btn btn--warning"><span class="btn-icon">⚠️</span> リセット</button>
                 </div>
                 
-                <div class="size-controls" style="margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-                    <span style="font-size: 0.85rem; color: var(--color-text-secondary);">列の幅:</span>
-                    <button id="zoomOutBtn" class="btn btn--secondary" style="padding: 4px 10px;" title="縮小（一覧表示）">-</button>
-                    <button id="zoomResetBtn" class="btn btn--secondary" style="padding: 4px 10px;" title="標準サイズ">100%</button>
-                    <button id="zoomInBtn" class="btn btn--secondary" style="padding: 4px 10px;" title="拡大">+</button>
+                <div class="size-controls" style="margin-top: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="font-size: 0.8rem; color: var(--color-text-secondary);">列の幅:</span>
+                    <button id="zoomOutBtn" class="btn btn--secondary" style="padding: 2px 8px;" title="縮小（一覧表示）">-</button>
+                    <button id="zoomResetBtn" class="btn btn--secondary" style="padding: 2px 8px;" title="標準サイズ">100%</button>
+                    <button id="zoomInBtn" class="btn btn--secondary" style="padding: 2px 8px;" title="拡大">+</button>
                 </div>
             </div>
 
             <!-- Time Controls -->
             <div class="control-group" id="time-control-group">
-                <h3 class="control-title">時間管理</h3>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-md);">
+                    <h3 class="control-title" style="margin-bottom: 0;">時間管理</h3>
+                    <button id="toggleTimeControlsBtn" class="btn btn--secondary" title="時間枠の移動・選択操作ボタンを表示/非表示にします">
+                        ⚙️ 時間操作モード
+                    </button>
+                </div>
                 <div class="time-controls-simplified">
                     <select id="time-interval" class="form-control" title="時間間隔">
                         <option value="5">5分</option>
@@ -559,9 +631,9 @@
                     <select id="insert-time" class="form-control" title="基準時間"></select>
                     <div class="radio-group" title="挿入方向">
                         <input type="radio" id="insert-before" name="insert-position" value="before">
-                        <label for="insert-before">前</label>
+                        <label for="insert-before" style="font-size:0.8rem;">前</label>
                         <input type="radio" id="insert-after" name="insert-position" value="after" checked>
-                        <label for="insert-after">後</label>
+                        <label for="insert-after" style="font-size:0.8rem;">後</label>
                     </div>
                     <button id="addTimeButton" class="btn btn--accent">
                         <span class="btn-icon">⏰</span> 追加
@@ -754,7 +826,7 @@
                 this.handleInput = this.handleInput.bind(this);
                 this.finishTimeEditing = this.finishTimeEditing.bind(this);
                 this.handleTimeKeydown = this.handleTimeKeydown.bind(this);
-                this.currentColWidth = 180;
+                this.currentColWidth = window.innerWidth <= 600 ? 130 : 140;
                 this.MIN_COL_WIDTH = 20;
                 this.MAX_COL_WIDTH = 300;
                 
@@ -789,7 +861,13 @@
 
                 document.getElementById('zoomInBtn')?.addEventListener('click', () => this.changeColumnWidth(20));
                 document.getElementById('zoomOutBtn')?.addEventListener('click', () => this.changeColumnWidth(-20));
-                document.getElementById('zoomResetBtn')?.addEventListener('click', () => this.setColumnWidth(180));
+                document.getElementById('zoomResetBtn')?.addEventListener('click', () => this.setColumnWidth(window.innerWidth <= 600 ? 130 : 140));
+
+                /* ▼ 時間コントロール表示切替ボタンの設定 */
+                document.getElementById('toggleTimeControlsBtn')?.addEventListener('click', (e) => {
+                    this.table.classList.toggle('show-time-controls');
+                    e.currentTarget.classList.toggle('active');
+                });
 
                 document.addEventListener('click', this.handleMoveClick);
                 document.addEventListener('input', this.handleInput);
@@ -818,7 +896,8 @@
                 this.currentColWidth = width;
                 document.documentElement.style.setProperty('--col-width', `${width}px`);
                 
-                const percentage = Math.round((width / 180) * 100);
+                const base = window.innerWidth <= 600 ? 130 : 140;
+                const percentage = Math.round((width / base) * 100);
                 const resetBtn = document.getElementById('zoomResetBtn');
                 if (resetBtn) {
                     resetBtn.textContent = `${percentage}%`;
@@ -890,7 +969,6 @@
                 const target = e.target;
                 if (!target.classList.contains('move-btn')) return;
 
-                // 左右移動（列の移動）
                 if (target.classList.contains('move-left') || target.classList.contains('move-right')) {
                     const columnIndex = this.getColumnIndex(target);
                     if (columnIndex === -1) return;
@@ -901,7 +979,6 @@
                         this.moveColumnRight(columnIndex);
                     }
                 } 
-                // 上下移動（行の移動）
                 else if (target.classList.contains('move-up') || target.classList.contains('move-down')) {
                     const row = target.closest('tr');
                     if (!row) return;
